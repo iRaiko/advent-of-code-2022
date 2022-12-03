@@ -1,4 +1,4 @@
-use std::io::{Result, ErrorKind};
+use std::{io::{Result, ErrorKind}};
 
 fn get_most_calories(elves: &Vec<Vec<u32>>) -> u32
 {
@@ -63,9 +63,37 @@ fn clean_data(input: String) -> Result<Vec<Vec<u32>>>
     Ok(elves)
 }
 
-pub fn day_1_solution() -> Result<u32>
+pub fn day_1_solution_part_one() -> Result<u32>
 {
     let raw_input_data = std::fs::read_to_string(r"G:\Programming\Github\advent-of-code-2022\data\day_1_data.txt")?;
     let elves = clean_data(raw_input_data)?;
     Ok(get_most_calories(&elves))
+}
+
+
+pub fn day_1_solution_part_two() -> Result<u32>
+{
+    let raw_input_data = std::fs::read_to_string(r"G:\Programming\Github\advent-of-code-2022\data\day_1_data.txt")?;
+    let elves = clean_data(raw_input_data)?;
+    Ok(get_top_three_calories(&elves))
+}
+
+fn get_top_three_calories(elves: &Vec<Vec<u32>>) -> u32
+{
+    let mut calories = std::collections::BTreeSet::new();
+    for elve in elves
+    {
+        let mut current_elve_calories = 0;
+        for calorie in elve
+        {
+            current_elve_calories += calorie;
+        }
+        calories.insert(current_elve_calories);
+    }
+    let mut t = 0;
+    for i in calories.iter().rev().take(3)
+    {
+        t += i;
+    }
+    t
 }
